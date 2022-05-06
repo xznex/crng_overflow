@@ -1,0 +1,56 @@
+@font-face {
+    font-family: 'YahfieRU';
+    src: url(../fonts/YahfieRU.ttf);
+}
+
+body {
+    font-family: 'YahfieRU';
+}
+
+.button_ask {
+    border: none;
+    background: none;
+    outline: none;
+}
+
+.button_ask:focus, .button_ask:active {
+    outline:none;
+}
+
+.button_ask:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+/*#button_ask:focus {}*/
+
+#input_search {
+    font-size: 20px;
+    border: none;
+    border-radius: 3px;
+    margin: 0 0 0 5px;
+    padding: 12px 63px;
+    outline: none;
+    background: #fff url(../icons/search.png) 100% 100% no-repeat;
+    background-size: cover;
+}
+
+a {
+    color: black;
+    text-decoration: underline;
+}
+
+.need-border {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.without_text_decoration > a {
+    text-decoration: none;
+    padding: 0 5px 0 5px;
+}
+
+.pagination>li>a {
+    color: black;
+    text-decoration: none;
+}

@@ -1,0 +1,17 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="col-md-8 col-lg-9">
+    <div class="pb-3">
+        <h2 style="display: inline-block"><b>Tag:</b></h2>
+        <h2 style="display: inline-block" class="pl-3">{{ tag_url }}</h2>
+    </div>
+
+    {% for q in question %}
+        {% include 'include/question.html' %}
+    {% endfor %}
+
+    {% include 'include/paginator.html' %}
+</div>
+{% endblock %}
