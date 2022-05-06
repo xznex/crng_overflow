@@ -1,0 +1,56 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="col-md-8 col-lg-9">
+
+    <div class="mb-4 border-bottom">
+        <div class="row p-1">
+            <div>
+                <img src="{% static question.profile.avatar %}" alt="no_name" style="height:90px">
+            </div>
+            <div class="col d-flex flex-column">
+                <h2 style="display: inline-block"><b>{{ question.title }}</b></h2>
+                <h6>{{ question.text }}</h6>
+                <div class="">
+                    <div style="display: inline-block">
+                        <h5 style="display: inline-block"><b>Tags: </b></h5>
+                        {% for t in question.tags.all %}
+                            <a href="{% url 'tag' t %}">{{ t }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for a in answers %}
+        <div class="pb-3">
+            <div class="need-border row">
+                <div>
+                    <img src="{% static a.profile.avatar %}" alt="no_name" style="height:55px">
+                </div>
+                <div class="col d-flex flex-column pl-4 pt-1">
+                    <h6>{{ a.text }}</h6>
+                    <div class="pt-2">
+                        <h5><a href="/" style="text-decoration: none"><b>{% if a.is_correct %}Correct!{% else %}No correct!{% endif %} </b></a></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="form-group row">
+        <div class="col-sm-12 p-0">
+                <textarea class="form-control" id="answer" rows="3"
+                          placeholder="Enter your answer here..."></textarea>
+        </div>
+    </div>
+    <div class="pb-3 row">
+        <div class="" style="">
+            <button class="button_ask">
+                <img src="{% static 'icons/ask.png' %}" alt="Фолбэк" style="width: 70px;">
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
