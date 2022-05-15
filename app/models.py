@@ -7,6 +7,11 @@ from django.db import models
 
 
 class TagManager(models.Manager):
+    def get_or_create_tag(self, tag, question):
+        tag, created = self.get_or_create(tag=tag)
+        question.tags.add(tag)
+        return tag
+
     def hot_tags(self):
         return super().get_queryset().order_by("-rating")
 

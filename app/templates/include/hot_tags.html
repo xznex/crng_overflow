@@ -1,0 +1,8 @@
+<div class="p-4">
+    <h2>Popular Tags</h2>
+    <div class="without_text_decoration">
+        {% for t in tags %}
+            <a href="{% url 'tag' t %}">{{ t }}</a>
+        {% endfor %}
+    </div>
+</div>

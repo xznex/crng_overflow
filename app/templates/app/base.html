@@ -30,12 +30,19 @@
 
 
         <div class="text-end d-flex flex-row align-items-center">
-            <img src="{% static 'icons/no_name.png' %}" alt="Фолбэк" style="width: 60px; height: 60px;">
-            <div class="pl-3 py-4">
-                <h4><a href="{% url 'settings' %}" style="text-decoration: none;">Dr. Pepper</a></h4>
-                <a href="{% url 'settings' %}" class="pr-1">settings</a>
-                <a href="/">log out</a>
-            </div>
+            {% if request.user.is_authenticated %}
+                <img src="{% static 'icons/no_name.png' %}" alt="Фолбэк" style="width: 60px; height: 60px;">
+                <div class="pl-3 py-4">
+                    <h4><a href="{% url 'settings' %}" style="text-decoration: none;">{{ user.get_username }}</a></h4>
+                    <a href="{% url 'settings' %}" class="pr-1">settings</a>
+                    <a href="{% url 'logout' %}">logout</a>
+                </div>
+            {% else %}
+                <div class="pl-3 py-4">
+                    <a href="{% url 'signup' %}">Signup</a>
+                    <a href="{% url 'login' %}">Login</a>
+                </div>
+            {% endif %}
         </div>
 
     </header>
@@ -48,14 +55,7 @@
 
         <div class="col-md-4 col-lg-3 position-sticky">
             <div class="pl-5">
-                <div class="p-4">
-                    <h2>Popular Tags</h2>
-                    <div class="without_text_decoration">
-                        {% for t in tags %}
-                            <a href="{% url 'tag' t %}">{{ t }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
+                {% include 'include/hot_tags.html' %}
                 <div class="p-4">
                     <h2>Best members</h2>
                     <ol class="list-unstyled">

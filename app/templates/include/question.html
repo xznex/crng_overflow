@@ -2,8 +2,14 @@
 
 <div class="pb-3">
     <div class="need-border row">
-        <div>
-            <img src="{% static q.profile.avatar %}" alt="avatar" style="height:55px">
+        <div class="d-flex flex-column">
+            <div>
+                <img src="{% static q.profile.avatar %}" alt="avatar" style="height:55px">
+            </div>
+            <div class="text-muted font-weight-light mb-auto" style="line-height: 97%; font-size: 15px; margin-top: 10px;">
+                <p style="margin-bottom: 0">0 votes</p>
+                <p style="margin-bottom: 0">0 answers</p>
+            </div>
         </div>
         <div class="col d-flex flex-column">
             <h2 style="display: inline-block"><a href="{% url 'question' q.pk %}"

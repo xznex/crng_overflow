@@ -1,0 +1,76 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="col-md-8 col-lg-9">
+    {% if request.user.is_authenticated %}
+        <div class="col-md-8 col-lg-9">
+            <h1 class="display-4">You are already registered!</h1>
+            <a class="lead" href="{% url 'index' %}">Click here to go to home.</a>
+        </div>
+    {% else %}
+    <div class="pb-3">
+        <h2 style="display: inline-block"><b>Registration: </b></h2>
+    </div>
+    <div>
+
+{#            {% for field in form %}#}
+{#                <div class="form-group row">#}
+{#                    <label class="col-sm-2 col-form-label" for="{{ field.id_for_label }}"><h5>{{ field.html_name }}</h5></label>#}
+{#                    <div class="col-sm-5">#}
+{#                        {{ field }}#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% endfor %}#}
+
+        <form novalidate class="p-3" action="/signup/" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="">{{ form.username.errors }}</div>
+            <div class="form-group row">
+                <label for="{{ form.username.id_for_label }}" class="col-sm-2 col-form-label"><h5>Login</h5></label>
+                <div class="col-sm-5">
+                    {{ form.username }}
+                </div>
+            </div>
+            <div class="">{{ form.email.errors }}</div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="{{ form.email.id_for_label }}"><h5>Email</h5></label>
+                <div class="col-sm-5">
+                    {{ form.email }}
+                </div>
+            </div>
+            <div class="">{{ form.password.errors }}</div>
+            <div class="form-group row">
+                <label class="col-form-label col-sm-2" for="{{ form.password.id_for_label }}"><h5>Password</h5></label>
+                <div class="col-sm-5">
+                    {{ form.password }}
+                </div>
+            </div>
+            <div class="">{{ form.password_repeat.errors }}</div>
+            <div class="form-group row">
+                <label class="col-form-label col-sm-2" for="{{ form.password_repeat.id_for_label }}"><h5>Repeat password</h5></label>
+                <div class="col-sm-5">
+                    {{ form.password_repeat }}
+                </div>
+            </div>
+            <div class="">{{ form.upload_avatar.errors }}</div>
+            <div class="form-group row">
+                <label for="{{ form.upload_avatar.id_for_label }}" class="col-sm-2 col-form-label"><h5>Upload avatar</h5></label>
+                <div class="col-sm-5">
+                    {{ form.upload_avatar }}
+                </div>
+            </div>
+
+            <div class="pb-3 row">
+                <div class="col-sm-10 offset-sm-2 text-left" style="padding-left: 20px">
+                    <button class="button_ask" type="submit">
+                        <img src="{% static 'icons/ask.png' %}" alt="Фолбэк" style="width: 70px;">
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

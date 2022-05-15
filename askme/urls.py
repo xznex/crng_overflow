@@ -22,7 +22,8 @@ import app.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('app.urls'))
+    # path('', include('django.contrib.auth.urls')),
+    path('', include('app.urls')),
 ]
 
 handler404 = app.views.page_not_found

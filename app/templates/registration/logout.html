@@ -1,0 +1,9 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="col-md-8 col-lg-9">
+    <h1 class="display-4">Logged out!</h1>
+    <a class="lead" href="{% url 'login' %}">Click here to login again.</a>
+</div>
+{% endblock %}
