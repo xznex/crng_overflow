@@ -1,5 +1,5 @@
 # crng_overflow
-help me
+ask me
 
 check my branche
 
