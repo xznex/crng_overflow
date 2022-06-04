@@ -31,7 +31,7 @@
 
         <div class="text-end d-flex flex-row align-items-center">
             {% if request.user.is_authenticated %}
-                <img src="{% static 'icons/no_name.png' %}" alt="Фолбэк" style="width: 60px; height: 60px;">
+                <img src="{% static user.profile.avatar %}" alt="Фолбэк" style="width: 60px; height: 60px;">
                 <div class="pl-3 py-4">
                     <h4><a href="{% url 'settings' %}" style="text-decoration: none;">{{ user.get_username }}</a></h4>
                     <a href="{% url 'settings' %}" class="pr-1">settings</a>
@@ -71,6 +71,6 @@
     </div>
 </div>
 
-<script type="javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+{#<script type="javascript" src="{% static 'js/bootstrap.min.js' %}"></script>#}
 </body>
 </html>

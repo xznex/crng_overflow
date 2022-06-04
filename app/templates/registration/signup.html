@@ -23,7 +23,7 @@
 {#                </div>#}
 {#            {% endfor %}#}
 
-        <form novalidate class="p-3" action="/signup/" method="post">
+        <form novalidate class="p-3" action="/signup/" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.non_field_errors }}
             <div class="">{{ form.username.errors }}</div>

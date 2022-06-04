@@ -2,29 +2,108 @@
 {% load static %}
 
 {% block content %}
+<head>
+    <script src="{% static 'js/all.min.js' %}"></script>
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+
+<style>
+    .like-outer {
+        {#width: 250px;#}
+        float: left;
+    }
+
+    .like-area {
+        width: 100%;
+        float: left;
+    }
+
+    .like-area ul {
+        list-style: none;
+        margin: 0;
+    }
+
+    .like-area ul li {
+        display: inline-block;
+        margin: 0 5px 0 0;
+    }
+
+    .like-area ul li a {
+        width: 100%;
+        {#padding: 10px;#}
+        font-size: 25px;
+        color: #000;
+        cursor: pointer;
+        float: left;
+    }
+
+    .like-no {
+        font-size: 20px;
+    }
+
+    .like-area i {
+        float: left;
+    }
+
+    .my-btn, .my-btn:active, .my-btn:after {
+        background: none;
+        color: inherit;
+        border: none;
+        padding: 0;
+        font: inherit;
+        cursor: pointer;
+        outline: none;
+    }
+</style>
 
 <div class="col-md-8 col-lg-9">
 
     <div class="mb-4 border-bottom">
         <div class="row p-1">
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column" style="width: 12%">
                 <div>
                     <img src="{% static question.profile.avatar %}" alt="no_name" style="height:90px">
                 </div>
-                <div class="text-muted font-weight-light mt-auto" style="line-height: 97%; font-size: 15px;">
-                    <p style="margin-bottom: 0">like(0)</p>
-                    <p style="margin-bottom: 0">dislike(0)</p>
-                </div>
+                {% if request.user.is_authenticated %}
+                <span class="text-muted font-weight-light mt-auto like-outer pt-3" style="line-height: 97%; font-size: 15px">
+                    <span id="like-counter" class="like-area">
+                        <ul class="pl-0">
+                            <li>
+{#                                {{ question.is_vote_quest }}#}
+                               {% if question.is_vote %}
+                                   <a id="vote-up-a" style="pointer-events: none">
+                               {% else %}
+                                   <a class="vote-up-a">
+                               {% endif %}
+                                    <button class="vote-up my-btn" data-id="{{ question.id }}"><i class="far fa-thumbs-up" style="width: 20px; height: 20px"></i></button>
+                                    <span class="like-no vote-up-count">{{ question.likes_count }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="vote-down-a">
+                                    <button class="vote-down my-btn" data-id="{{ question.id }}"><i class="far fa-thumbs-down" style="width: 20px; height: 20px"></i></button>
+                                    <span class="like-no">{{ question.dislikes_count }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </span>
+                </span>
+                {% endif %}
             </div>
-            <div class="col d-flex flex-column">
+            <div class="col d-flex flex-column pl-lg-0 pl-md-5 pl-sm-5">
                 <h2 style="display: inline-block"><b>{{ question.title }}</b></h2>
                 <h6>{{ question.text }}</h6>
-                <div class="">
-                    <div style="display: inline-block">
+
+                <div class="d-flex">
+                    <div style="display: inline-block; margin-top: 4px;">
                         <h5 style="display: inline-block"><b>Tags: </b></h5>
                         {% for t in question.tags.all %}
                             <a href="{% url 'tag' t %}">{{ t }}</a>
                         {% endfor %}
+                    </div>
+                    <div class="font-weight-light ml-auto" style="display: inline-block; margin-top: 6px;">
+                        <a href="{{ question.profile.user.id }}/">{{ question.profile.user }}</a>
                     </div>
                 </div>
             </div>
@@ -34,30 +113,71 @@
     {% for a in answers %}
         <div class="pb-3">
             <div class="need-border row" style="padding-bottom: 0">
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column" style="width: 9%">
                     <div>
-                        <img src="{{ a.profile.avatar }}" alt="no_name" style="height:55px">
+                        <img src="{% static a.profile.avatar %}" alt="no_name" style="height:55px">
                     </div>
                     <div class="text-muted font-weight-light mt-auto" style="line-height: 97%; font-size: 15px; margin-bottom: 10px;">
-                        <p style="margin-bottom: 0">like(0)</p>
-                        <p style="margin-bottom: 0">dislike(0)</p>
+                        <span id="like-counter" class="like-area pt-1" style="width: 90%">
+                            <ul class="pl-0">
+                                <li>
+                                    <a class="vote-up-a">
+                                        <button class="comment-vote-up my-btn" data-id="{{ a.id }}"><i class="far fa-thumbs-up" style="width: 20px; height: 20px"></i></button>
+                                        <span class="like-no vote-up-count" style="font-size: 70%">{{ a.likes_count }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="vote-down-a">
+                                        <button class="comment-vote-down my-btn" data-id="{{ a.id }}"><i class="far fa-thumbs-down" style="width: 20px; height: 20px"></i></button>
+                                        <span class="like-no" style="font-size: 70%">{{ a.dislikes_count }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </span>
                     </div>
                 </div>
 
-                <div class="col d-flex flex-column pl-4 pt-1">
+                <div class="col d-flex flex-column pl-lg-0 pl-md-4 pl-sm-2 pt-1">
                     <p style="margin-bottom: 0">{{ a.text }}</p>
-                    <div class="mt-3">
+                    <div class="mt-3 d-flex">
                         {% if user.id == question.profile.user.id %}
-                            <form>
-                                <div class="form-check">
+                            {% if a.is_correct %}
+                                <form class="d-flex flex-row form-check">
                                     <label class="form-check-label " for="flexCheckDefault">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                                        name="correct">
+                                        name="correct" data-id="{{ a.id }}" checked>
+                                        <h5 id="is_correct_text">Correct!</h5>
+                                    </label>
+                                </form>
+                            {% else %}
+                                <form class="d-flex flex-row form-check">
+                                    <label class="form-check-label " for="flexCheckDefault">
+                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                                        name="correct" data-id="{{ a.id }}">
+                                        <h5>(Correct)</h5>
+                                    </label>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            {% if a.is_correct %}
+                                <form class="d-flex flex-row form-check">
+                                    <label class="form-check-label " for="flexCheckDefault">
+                                        <input class="form-check-input" type="checkbox" checked>
                                         <h5>Correct!</h5>
                                     </label>
-                                </div>
-                            </form>
+                                </form>
+                            {% else %}
+                                <form class="d-flex flex-row form-check">
+                                    <label class="form-check-label " for="flexCheckDefault">
+                                        <input class="form-check-input" type="checkbox" style="pointer-events:none">
+                                        <h5>(Correct)</h5>
+                                    </label>
+                                </form>
+                            {% endif %}
                         {% endif %}
+                        <span class="font-weight-light ml-auto mt-auto mb-1">
+                            <a href="{{ question.profile.user.id }}/">{{ a.profile.user }}</a>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -82,4 +202,103 @@
     </div>
 </div>
 
+<script>
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    $(".vote-up").click(function () {
+        $.ajax({
+            url: '/vote/',
+            method: 'POST',
+            data: {id: $(this).data('id'), answer: "like"},
+            headers: {'X-CSRFToken': csrftoken},
+            success: function () {
+                $('.vote-up-a').css('pointer-events', 'none');
+                $('.vote-down-a').css('pointer-events', 'none');
+             }
+        });
+    });
+
+    $(".vote-down").click(function () {
+        $.ajax({
+            url: '/vote/',
+            method: 'POST',
+            data: {id: $(this).data('id'), answer: "dislike"},
+            headers: {'X-CSRFToken': csrftoken},
+            success: function () {
+                $('.vote-down-a').css('pointer-events', 'none');
+                $('.vote-up-a').css('pointer-events', 'none');
+             }
+        });
+    });
+
+    $(".comment-vote-up").click(function () {
+        $.ajax({
+            url: '/comment_vote/',
+            method: 'POST',
+            data: {id: $(this).data('id'), answer: "like"},
+            headers: {'X-CSRFToken': csrftoken},
+            success: function () {
+                $('.vote-up-a').css('pointer-events', 'none');
+                $('.vote-down-a').css('pointer-events', 'none');
+             }
+        });
+    });
+
+    $(".comment-vote-down").click(function () {
+        $.ajax({
+            url: '/comment_vote/',
+            method: 'POST',
+            data: {id: $(this).data('id'), answer: "dislike"},
+            headers: {'X-CSRFToken': csrftoken},
+            success: function () {
+                $('.vote-down-a').css('pointer-events', 'none');
+                $('.vote-up-a').css('pointer-events', 'none');
+             }
+        });
+    });
+
+    $(".like-area a").click(function () {
+        if ($(this).hasClass("like-active")) {
+            $('.vote-up-a').css('pointer-events', 'none');
+            $('.vote-down-a').css('pointer-events', 'none');
+        } else {
+            $(this).find('.like-no').html(parseInt($(this).find('.like-no').html(), 10) + 1)
+        }
+        $(this).toggleClass('like-active');
+    });
+
+    $("#flexCheckDefault").change(function () {
+        $.ajax({
+            url: '/correct/',
+            method: 'POST',
+            data: {id: $(this).data('id')},
+            headers: {'X-CSRFToken': csrftoken},
+            success: function () {
+                if ($('#flexCheckDefault').is(':checked')){
+                    $('#is_correct_text').html('Correct!');
+                } else {
+                    $('#is_correct_text').html('(Correct)');
+                }
+             }
+        });
+    });
+
+</script>
 {% endblock %}
+
+

@@ -1,21 +1,22 @@
 {% load static %}
 
 <div class="pb-3">
-    <div class="need-border row">
+    <div class="need-border row" style="padding-bottom: 5px;">
         <div class="d-flex flex-column">
             <div>
                 <img src="{% static q.profile.avatar %}" alt="avatar" style="height:55px">
             </div>
-            <div class="text-muted font-weight-light mb-auto" style="line-height: 97%; font-size: 15px; margin-top: 10px;">
-                <p style="margin-bottom: 0">0 votes</p>
-                <p style="margin-bottom: 0">0 answers</p>
+            <div class="text-muted font-weight-light mb-auto"
+                 style="line-height: 97%; font-size: 15px; margin-top: 10px;">
+                <p style="margin-bottom: 0">{{ q.rating }} rating</p>
+                <p style="margin-bottom: 0">{{ q.number_of_answers }} answers</p>
             </div>
         </div>
         <div class="col d-flex flex-column">
             <h2 style="display: inline-block"><a href="{% url 'question' q.pk %}"
-                                                 style="text-decoration: none;">{{ q.title }}</a></h2>
-            <h6>{{ q.text }}</h6>
-            <div class="">
+                                                 style="text-decoration: none;">{{ q.title|truncatechars:100 }}</a></h2>
+            <h6>{{ q.text|truncatechars:350 }}</h6>
+            <div class="d-flex">
                 <a href="{% url 'question' q.pk %}" style="display: inline-block">answer
                     ({{ q.number_of_answers }})</a>
                 <div style="display: inline-block" class="pl-2">
@@ -23,6 +24,9 @@
                     {% for t in q.tags.all %}
                         <a href="{% url 'tag' t %}">{{ t }}</a>
                     {% endfor %}
+                </div>
+                <div class="font-weight-light ml-auto" style="display: inline-block; margin-top: 4px;">
+                    <a href="{{ q.profile.user.id }}/">{{ q.profile.user }}</a>
                 </div>
             </div>
         </div>
